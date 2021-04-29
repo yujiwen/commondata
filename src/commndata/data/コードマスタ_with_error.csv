@@ -1,0 +1,5 @@
+id,delete_flag,start_date,end_date,codecategory,code,name,value,display_order
+1,False,2021-04-19,,1,m,male,male,1
+2,False,2021-04-19,,1,f,female,female,2
+3,False,2021-04-19,,x,o,other,other,3
+4,False,2021-04-19,,1,t,test,test,4

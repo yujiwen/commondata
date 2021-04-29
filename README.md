@@ -1,12 +1,18 @@
-# csv-with-modelform-check
-Checked-csv is a Django plusin for importing and exporting model with included admin integration.
+# commndata
 
-## Features
+Collected some commonly used table columns to BaseTable and TimeLinedTable.
 
-- admin integration for export and import
-- multi-encoding support
-- import error check by model form
-- import error reporting
+## BaseTable
+- version
+- created_at
+- creator
+- updated_at
+- updater
+- delete_flag
+
+## TimeLinedTable
+- start_date
+- end_date
 
 ## Screenshots
 ![Export Action&Import button](images/checked_csv_001.png)
@@ -14,13 +20,13 @@ Checked-csv is a Django plusin for importing and exporting model with included a
 ## Installation and configuration
 - installation
   <pre>
-  >pip install checked-csv
+  >pip install commndata
   </pre>
 - configuration(settings.py)
   <pre>
   INSTALLED_APPS = (
     ...
-    'checked-csv',
+    'commndata',
   )
   </pre>
 

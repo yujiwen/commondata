@@ -1,0 +1,3 @@
+id,password,last_login,is_superuser,username,first_name,last_name,email,is_staff,is_active,date_joined
+1,pbkdf2_sha256$216000$yZJzr7BJXBuW$akSr7OXMLu7vWTUN0Y+YnmoDLfEkwSRHf9W1vM7czhg=,2021-04-15 20:41:52.171043+00:00,True,root,,,yujiwen@hotmail.com,True,True,2021-04-15 20:38:14.501384+00:00
+2,pbkdf2_sha256$216000$XYLruaJjWFoU$j/p3V9vL6AgJ1Upu5hYk2i+E8WfIdrAWbYJ8rCcPBzA=,2021-04-11 21:20:38.452108+00:00,True,staff,,,yujiwen@hotmail.com,True,True,2021-04-11 21:19:08.936418+00:00

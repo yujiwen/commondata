@@ -1,1 +1,1 @@
-python -m twine upload --repository checked_csv dist/*
+python -m twine upload --repository commndata dist/*
