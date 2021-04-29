@@ -4,10 +4,13 @@ from django.contrib.admin import ModelAdmin
 from django.contrib.auth import models as auth
 from django.utils.translation import gettext_lazy as _
 
-from checked_csv import CsvExportModelMixin, CsvImportModelMixin
+from checked_csv.admin import CsvExportModelMixin, CsvImportModelMixin
 from commndata.admin import UserAdminMixin, BaseTableAdminMixin, TimeLinedTableAdminMixin
 from commndata.models import CodeCategory, CodeMaster
 
+
+admin.site.unregister(auth.User)
+admin.site.unregister(auth.Group)
 
 @admin.register(auth.Group)
 class GroupModelAdmin(CsvExportModelMixin, CsvImportModelMixin, GroupAdmin):

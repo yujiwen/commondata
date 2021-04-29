@@ -1,1 +1,3 @@
 recursive-include src/commndata/data *
+recursive-include src/commndata/locale *
+recursive-include src/commndata/migrations *

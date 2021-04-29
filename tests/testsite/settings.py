@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'checked_csv',
     'commndata',
+    'testsite',
 ]
 
 MIDDLEWARE = [

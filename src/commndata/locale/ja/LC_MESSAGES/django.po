@@ -1,0 +1,286 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-30 05:22+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\admin.py:107
+msgid "validity"
+msgstr "有効性"
+
+#: .\admin.py:110
+msgid "Update Information"
+msgstr "更新情報"
+
+#: .\codes.py:4
+msgid "male"
+msgstr "男性"
+
+#: .\codes.py:5
+msgid "female"
+msgstr "女性"
+
+#: .\codes.py:6
+msgid "other"
+msgstr "他"
+
+#: .\codes.py:10
+msgid "HK"
+msgstr "北海道"
+
+#: .\codes.py:11
+msgid "AO"
+msgstr "青森"
+
+#: .\codes.py:12
+msgid "IT"
+msgstr "岩手"
+
+#: .\codes.py:13
+msgid "MG"
+msgstr "宮城"
+
+#: .\codes.py:14
+msgid "AK"
+msgstr "秋田"
+
+#: .\codes.py:15
+msgid "YG"
+msgstr "山形"
+
+#: .\codes.py:16
+msgid "FS"
+msgstr "福島"
+
+#: .\codes.py:17
+msgid "IB"
+msgstr "茨城"
+
+#: .\codes.py:18
+msgid "TC"
+msgstr "栃木"
+
+#: .\codes.py:19
+msgid "GU"
+msgstr "群馬"
+
+#: .\codes.py:20
+msgid "ST"
+msgstr "埼玉"
+
+#: .\codes.py:21
+msgid "CB"
+msgstr "千葉"
+
+#: .\codes.py:22
+msgid "TY"
+msgstr "東京"
+
+#: .\codes.py:23
+msgid "KN"
+msgstr "神奈川"
+
+#: .\codes.py:24
+msgid "NI"
+msgstr "新潟"
+
+#: .\codes.py:25
+msgid "TM"
+msgstr "富山"
+
+#: .\codes.py:26
+msgid "IS"
+msgstr "石川"
+
+#: .\codes.py:27
+msgid "FI"
+msgstr "福井"
+
+#: .\codes.py:28
+msgid "YN"
+msgstr "山梨"
+
+#: .\codes.py:29
+msgid "NA"
+msgstr "長野"
+
+#: .\codes.py:30
+msgid "GI"
+msgstr "岐阜"
+
+#: .\codes.py:31
+msgid "SZ"
+msgstr "静岡"
+
+#: .\codes.py:32
+msgid "AI"
+msgstr "愛知"
+
+#: .\codes.py:33
+msgid "ME"
+msgstr "三重"
+
+#: .\codes.py:34
+msgid "SI"
+msgstr "滋賀"
+
+#: .\codes.py:35
+msgid "KY"
+msgstr "京都"
+
+#: .\codes.py:36
+msgid "OS"
+msgstr "大阪"
+
+#: .\codes.py:37
+msgid "HG"
+msgstr "兵庫"
+
+#: .\codes.py:38
+msgid "NR"
+msgstr "奈良"
+
+#: .\codes.py:39
+msgid "WA"
+msgstr "和歌山"
+
+#: .\codes.py:40
+msgid "TT"
+msgstr "鳥取"
+
+#: .\codes.py:41
+msgid "SM"
+msgstr "島根"
+
+#: .\codes.py:42
+msgid "OY"
+msgstr "岡山"
+
+#: .\codes.py:43
+msgid "HS"
+msgstr "広島"
+
+#: .\codes.py:44
+msgid "YA"
+msgstr "山口"
+
+#: .\codes.py:45
+msgid "TK"
+msgstr "徳島"
+
+#: .\codes.py:46
+msgid "KA"
+msgstr "香川"
+
+#: .\codes.py:47
+msgid "EH"
+msgstr "愛媛"
+
+#: .\codes.py:48
+msgid "KO"
+msgstr "高知"
+
+#: .\codes.py:49
+msgid "FO"
+msgstr "福岡"
+
+#: .\codes.py:50
+msgid "SG"
+msgstr "佐賀"
+
+#: .\codes.py:51
+msgid "NS"
+msgstr "長崎"
+
+#: .\codes.py:52
+msgid "KU"
+msgstr "熊本"
+
+#: .\codes.py:53
+msgid "OI"
+msgstr "大分"
+
+#: .\codes.py:54
+msgid "MZ"
+msgstr "宮崎"
+
+#: .\codes.py:55
+msgid "KG"
+msgstr "鹿児島"
+
+#: .\codes.py:56
+msgid "OK"
+msgstr "沖縄"
+
+#: .\forms.py:13
+#, python-format
+msgid ""
+"Please enter the correct %(username)s and password for a superuser account. "
+"Note that both fields may be case-sensitive."
+msgstr ""
+
+#: .\models.py:9
+msgid "version"
+msgstr "バージョン"
+
+#: .\models.py:10
+msgid "created_at"
+msgstr "作成日時"
+
+#: .\models.py:11
+msgid "creator"
+msgstr "作成者"
+
+#: .\models.py:12
+msgid "updated_at"
+msgstr "更新日時"
+
+#: .\models.py:13
+msgid "updater"
+msgstr "更新者"
+
+#: .\models.py:14
+msgid "delete flag"
+msgstr "削除フラグ"
+
+#: .\models.py:51
+msgid "start_date"
+msgstr "開始日"
+
+#: .\models.py:52
+msgid "end_date"
+msgstr "終了日"
+
+#: .\models.py:62 .\models.py:67 .\models.py:68 .\models.py:82
+msgid "code category"
+msgstr "コード分類"
+
+#: .\models.py:63 .\models.py:84
+msgid "name"
+msgstr "名称"
+
+#: .\models.py:83
+msgid "code"
+msgstr "コード"
+
+#: .\models.py:85
+msgid "value"
+msgstr "値"
+
+#: .\models.py:89 .\models.py:90
+msgid "code master"
+msgstr "コードマスタ"
