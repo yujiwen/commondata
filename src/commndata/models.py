@@ -1,8 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from datetime import date
 from django.utils import timezone
-
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class BaseTable(models.Model):
@@ -32,8 +31,19 @@ class BaseTable(models.Model):
         self.version += 1
 
     @staticmethod
-    def get_noninputable_fields():
-        return ('creator', 'created_at', 'updater', 'updated_at', 'version')
+    def get_readonly_fields():
+        """
+        Read only fields by means of Django Admin Site definition.
+        By means of HTML, they are only div tags, which are classed as readonly.
+        """
+        return ('creator', 'created_at', 'updater', 'updated_at')
+
+    @staticmethod
+    def get_html_readonly_fields():
+        """
+        By means of HTML, they are input tags with readonly attribute.
+        """
+        return {'version'}
 
     @staticmethod
     def get_autoupdatable_fields():
@@ -46,6 +56,20 @@ class BaseTable(models.Model):
     @staticmethod
     def get_validity_info_fieldsets():
         return [('delete_flag',)]
+
+    def optimistic_violation_check(self) -> None:
+        """
+        Optimistic violation check using version field.
+        """
+        if self.pk:
+            latest = self.__class__.objects.get(pk=self.pk)
+            if latest.version > self.version:
+                name = self.__class__._meta.verbose_name.title()
+                raise ValidationError(_('This %(name)s maybe already changed by other users. Please reopen the screen.'%{'name': name}))
+
+    def clean(self) -> None:
+        self.optimistic_violation_check()
+        return super(BaseTable, self).clean()
 
 class TimeLinedTable(BaseTable):
     start_date = models.DateField(verbose_name = _('start_date'), blank = False, null = False)

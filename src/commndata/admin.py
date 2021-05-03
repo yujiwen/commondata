@@ -50,10 +50,10 @@ class UserAdminMixin():
             # disabled for 'groups' is not working, maybe because it's a ManyToManyField?
             disabled_fields |= {'is_superuser', 'username', 'groups',}
 
-            if obj is not None and obj == request.user:
+            if obj and obj == request.user:
                 disabled_fields |= {'is_staff', 'is_active', 'user_permissions',}
 
-            if obj is not None and obj != request.user:
+            if obj and obj != request.user:
                 disabled_fields |= { 'first_name', 'last_name', 'email', }
 
         for field in filter(lambda f: f in form.base_fields, disabled_fields):
@@ -69,13 +69,13 @@ class BaseTableAdminMixin():
         """
         override of the ModelAdmin
         """
-        return (*super(BaseTableAdminMixin, self).get_readonly_fields(request, obj), *self.model.get_noninputable_fields())
+        return (*super(BaseTableAdminMixin, self).get_readonly_fields(request, obj), *self.model.get_readonly_fields())
 
     def get_csv_excluded_fields(self) -> list[str]:
         """
         override CsvImportModelMixin
         """
-        return super(BaseTableAdminMixin, self).get_csv_excluded_fields() + list(self.model.get_noninputable_fields())
+        return super(BaseTableAdminMixin, self).get_csv_excluded_fields() + list(self.model.get_readonly_fields())
 
     def get_csv_excluded_fields_init_values(self, request) -> dict:
         """
@@ -114,6 +114,20 @@ class BaseTableAdminMixin():
             return list(filterfalse(lambda f: f in collected_fields, self.get_fields(request, obj)))
 
         return (self.fieldsets or [(None, {'fields': get_none_fieldsets()})]) + get_validity_fieldsets() + get_update_info_fieldsets()
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        override of the ModelAdmin
+        """
+        form = super(BaseTableAdminMixin, self).get_form(request, obj, **kwargs)
+        html_readonly_fields = self.model.get_html_readonly_fields()
+
+        for field in filter(lambda f: f in form.base_fields, html_readonly_fields):
+            widget = form.base_fields[field].widget
+            widget.attrs['readonly'] = 'true'
+            widget.attrs['style'] = 'border: none transparent; outline: none'
+
+        return form
 
     def save_model(self, request, obj, form, change):
         obj.updater = request.user.username
