@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.utils.functional import cached_property
+
 
 # Create your models here.
 class BaseTable(models.Model):
@@ -64,7 +66,7 @@ class BaseTable(models.Model):
         if self.pk:
             latest = self.__class__.objects.get(pk=self.pk)
             if latest.version > self.version:
-                name = self.__class__._meta.verbose_name.title()
+                name = self._meta.verbose_name.title()
                 raise ValidationError(_('This %(name)s maybe already changed by other users. Please reopen the screen.'%{'name': name}))
 
     def clean(self) -> None:
@@ -78,9 +80,56 @@ class TimeLinedTable(BaseTable):
     class Meta:
         abstract = True
 
+    @property
+    def is_history_editable(self):
+        return False
+
     @staticmethod
     def get_validity_info_fieldsets():
         return [('start_date', 'end_date', 'delete_flag')]
+
+    @cached_property
+    def get_model_unique_key(self) -> tuple:
+        """
+        Get a unique constraint named after the model name, if there is one.
+        The unique constraint was supposed to have the start_date field and all contained fields are not nullable.
+        """
+        if not self._meta.constraints:
+            return ()
+
+        unique_constraint_name = '%s_unique' % self._meta.model_name
+        unique_constraint = next(filter(lambda c: c.name == unique_constraint_name, self._meta.constraints), None)
+        if not unique_constraint:
+            return ()
+
+        return (k for k in unique_constraint.fields)
+    
+    @cached_property
+    def get_model_unique_values(self) -> dict:
+        return {k:getattr(self, k) for k in self.get_model_unique_key}
+
+    def get_newer_record(self):
+        """
+            Detect if there is a record with a newer start_date.
+            For that we need a unique constraint, which contains the start_date field, was defined.
+        """
+        constraint_values = {k:v for k,v in self.get_model_unique_key if k != 'start_date'}
+        try:
+            return self.get_next_by_start_date(**constraint_values)
+        except self.DoesNotExist:
+            return None
+
+    def clean(self) -> None:
+        if self.pk:             # when editing an existing record
+            original = self.__class__.objects.get(pk=self.pk)
+            if original.has_newer_record:
+                start_date_field = self._meta.get_field('start_date').verbose_name
+                raise ValidationError(_('There is a record, which has a newer %s, so we can not save this record.' % start_date_field))
+
+        return super(TimeLinedTable, self).clean()
+
+    def save(self):
+        
 
 class CodeCategory(BaseTable):
     codecategory = models.CharField(max_length=32, verbose_name=_('code category'))

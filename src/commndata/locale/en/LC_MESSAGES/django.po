@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-03 22:30+0900\n"
+"POT-Creation-Date: 2021-05-03 22:31+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,219 +16,218 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 #: .\src\commndata\admin.py:10
 msgid "commndata"
-msgstr "共通情報"
+msgstr "Common Data"
 
 #: .\src\commndata\admin.py:109
 msgid "validity"
-msgstr "有効性"
+msgstr ""
 
 #: .\src\commndata\admin.py:112
 msgid "Update Information"
-msgstr "更新情報"
+msgstr ""
 
 #: .\src\commndata\codes.py:4
 msgid "male"
-msgstr "男性"
+msgstr ""
 
 #: .\src\commndata\codes.py:5
 msgid "female"
-msgstr "女性"
+msgstr ""
 
 #: .\src\commndata\codes.py:6
 msgid "other"
-msgstr "他"
+msgstr ""
 
 #: .\src\commndata\codes.py:10
 msgid "HK"
-msgstr "北海道"
+msgstr ""
 
 #: .\src\commndata\codes.py:11
 msgid "AO"
-msgstr "青森"
+msgstr ""
 
 #: .\src\commndata\codes.py:12
 msgid "IT"
-msgstr "岩手"
+msgstr ""
 
 #: .\src\commndata\codes.py:13
 msgid "MG"
-msgstr "宮城"
+msgstr ""
 
 #: .\src\commndata\codes.py:14
 msgid "AK"
-msgstr "秋田"
+msgstr ""
 
 #: .\src\commndata\codes.py:15
 msgid "YG"
-msgstr "山形"
+msgstr ""
 
 #: .\src\commndata\codes.py:16
 msgid "FS"
-msgstr "福島"
+msgstr ""
 
 #: .\src\commndata\codes.py:17
 msgid "IB"
-msgstr "茨城"
+msgstr ""
 
 #: .\src\commndata\codes.py:18
 msgid "TC"
-msgstr "栃木"
+msgstr ""
 
 #: .\src\commndata\codes.py:19
 msgid "GU"
-msgstr "群馬"
+msgstr ""
 
 #: .\src\commndata\codes.py:20
 msgid "ST"
-msgstr "埼玉"
+msgstr ""
 
 #: .\src\commndata\codes.py:21
 msgid "CB"
-msgstr "千葉"
+msgstr ""
 
 #: .\src\commndata\codes.py:22
 msgid "TY"
-msgstr "東京"
+msgstr ""
 
 #: .\src\commndata\codes.py:23
 msgid "KN"
-msgstr "神奈川"
+msgstr ""
 
 #: .\src\commndata\codes.py:24
 msgid "NI"
-msgstr "新潟"
+msgstr ""
 
 #: .\src\commndata\codes.py:25
 msgid "TM"
-msgstr "富山"
+msgstr ""
 
 #: .\src\commndata\codes.py:26
 msgid "IS"
-msgstr "石川"
+msgstr ""
 
 #: .\src\commndata\codes.py:27
 msgid "FI"
-msgstr "福井"
+msgstr ""
 
 #: .\src\commndata\codes.py:28
 msgid "YN"
-msgstr "山梨"
+msgstr ""
 
 #: .\src\commndata\codes.py:29
 msgid "NA"
-msgstr "長野"
+msgstr ""
 
 #: .\src\commndata\codes.py:30
 msgid "GI"
-msgstr "岐阜"
+msgstr ""
 
 #: .\src\commndata\codes.py:31
 msgid "SZ"
-msgstr "静岡"
+msgstr ""
 
 #: .\src\commndata\codes.py:32
 msgid "AI"
-msgstr "愛知"
+msgstr ""
 
 #: .\src\commndata\codes.py:33
 msgid "ME"
-msgstr "三重"
+msgstr ""
 
 #: .\src\commndata\codes.py:34
 msgid "SI"
-msgstr "滋賀"
+msgstr ""
 
 #: .\src\commndata\codes.py:35
 msgid "KY"
-msgstr "京都"
+msgstr ""
 
 #: .\src\commndata\codes.py:36
 msgid "OS"
-msgstr "大阪"
+msgstr ""
 
 #: .\src\commndata\codes.py:37
 msgid "HG"
-msgstr "兵庫"
+msgstr ""
 
 #: .\src\commndata\codes.py:38
 msgid "NR"
-msgstr "奈良"
+msgstr ""
 
 #: .\src\commndata\codes.py:39
 msgid "WA"
-msgstr "和歌山"
+msgstr ""
 
 #: .\src\commndata\codes.py:40
 msgid "TT"
-msgstr "鳥取"
+msgstr ""
 
 #: .\src\commndata\codes.py:41
 msgid "SM"
-msgstr "島根"
+msgstr ""
 
 #: .\src\commndata\codes.py:42
 msgid "OY"
-msgstr "岡山"
+msgstr ""
 
 #: .\src\commndata\codes.py:43
 msgid "HS"
-msgstr "広島"
+msgstr ""
 
 #: .\src\commndata\codes.py:44
 msgid "YA"
-msgstr "山口"
+msgstr ""
 
 #: .\src\commndata\codes.py:45
 msgid "TK"
-msgstr "徳島"
+msgstr ""
 
 #: .\src\commndata\codes.py:46
 msgid "KA"
-msgstr "香川"
+msgstr ""
 
 #: .\src\commndata\codes.py:47
 msgid "EH"
-msgstr "愛媛"
+msgstr ""
 
 #: .\src\commndata\codes.py:48
 msgid "KO"
-msgstr "高知"
+msgstr ""
 
 #: .\src\commndata\codes.py:49
 msgid "FO"
-msgstr "福岡"
+msgstr ""
 
 #: .\src\commndata\codes.py:50
 msgid "SG"
-msgstr "佐賀"
+msgstr ""
 
 #: .\src\commndata\codes.py:51
 msgid "NS"
-msgstr "長崎"
+msgstr ""
 
 #: .\src\commndata\codes.py:52
 msgid "KU"
-msgstr "熊本"
+msgstr ""
 
 #: .\src\commndata\codes.py:53
 msgid "OI"
-msgstr "大分"
+msgstr ""
 
 #: .\src\commndata\codes.py:54
 msgid "MZ"
-msgstr "宮崎"
+msgstr ""
 
 #: .\src\commndata\codes.py:55
 msgid "KG"
-msgstr "鹿児島"
+msgstr ""
 
 #: .\src\commndata\codes.py:56
 msgid "OK"
-msgstr "沖縄"
+msgstr ""
 
 #: .\src\commndata\forms.py:13
 #, python-format
@@ -239,61 +238,59 @@ msgstr ""
 
 #: .\src\commndata\models.py:8
 msgid "version"
-msgstr "バージョン"
+msgstr ""
 
 #: .\src\commndata\models.py:9
 msgid "created_at"
-msgstr "作成日時"
+msgstr ""
 
 #: .\src\commndata\models.py:10
 msgid "creator"
-msgstr "作成者"
+msgstr ""
 
 #: .\src\commndata\models.py:11
 msgid "updated_at"
-msgstr "更新日時"
+msgstr ""
 
 #: .\src\commndata\models.py:12
 msgid "updater"
-msgstr "更新者"
+msgstr ""
 
 #: .\src\commndata\models.py:13
 msgid "delete flag"
-msgstr "削除フラグ"
+msgstr ""
 
 #: .\src\commndata\models.py:68
 #, python-format
 msgid ""
 "This %(name)s maybe already changed by other users. Please reopen the screen."
 msgstr ""
-"%(name)sが他のユーザーより変更された可能性があります。本画面を再表示して情報"
-"を更新してください。"
 
 #: .\src\commndata\models.py:75
 msgid "start_date"
-msgstr "開始日"
+msgstr ""
 
 #: .\src\commndata\models.py:76
 msgid "end_date"
-msgstr "終了日"
+msgstr ""
 
 #: .\src\commndata\models.py:86 .\src\commndata\models.py:91
 #: .\src\commndata\models.py:92 .\src\commndata\models.py:106
 msgid "code category"
-msgstr "コード分類"
+msgstr ""
 
 #: .\src\commndata\models.py:87 .\src\commndata\models.py:108
 msgid "name"
-msgstr "名称"
+msgstr ""
 
 #: .\src\commndata\models.py:107
 msgid "code"
-msgstr "コード"
+msgstr ""
 
 #: .\src\commndata\models.py:109
 msgid "value"
-msgstr "値"
+msgstr ""
 
 #: .\src\commndata\models.py:113 .\src\commndata\models.py:114
 msgid "code master"
-msgstr "コードマスタ"
+msgstr ""

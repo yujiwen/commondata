@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from os import path, getenv
+from django.conf.locale.ja import formats as ja_formats
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -107,9 +109,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -127,3 +131,98 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LANGUAGES = (
+    ('en', 'English'),
+    ('ja', 'Japanese'),
+)
+
+USE_THOUSAND_SEPARATOR = True
+NUMBER_GROUPING = (3, 0)
+
+ja_formats.DATE_FORMAT = 'Y/m/d'                    # default: 'Y年n月j日'
+ja_formats.DATETIME_FORMAT = 'Y/m/d H:i:s'          # default: 'Y年n月j日G:i'
+ja_formats.SHORT_DATETIME_FORMAT = 'Y/m/d H:i'      # default: 'Y/m/d G:i'
+
+ja_formats.DATE_INPUT_FORMATS = ['%Y/%m/%d', '%Y-%m-%d', '%Y%m%d']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}][{module}:{filename}:{funcName}][{levelname}][{process:d}][{thread:d}]: {message}',
+            # 'datefmt' : '%Y/%m/%d %H:%M:%S',
+            'style': '{',
+        },
+        'simple': {
+            'format': '[{asctime}][{module}][{levelname}]: {message}',
+            'datefmt' : '%Y/%m/%d %H:%M:%S',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        }
+    },
+    'handlers': {
+        'sql_log': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': '/temp/django_sql_log.log',
+            'encoding':'utf8',
+        },
+        'root_log': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_false'],
+            # TimedRotatingFileHandler must be used with --noreload option
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'when': 'midnight',
+            'interval': 5,
+            'backupCount': 100,
+            'formatter': 'simple',
+            'filename': '/temp/django_root_log.log',
+            'encoding':'utf8',
+        },
+        'testsite_log': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': '/temp/testsite_log.log',
+            'encoding':'utf8',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'formatter': 'verbose',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'root': {
+        # 'handlers': ['console', 'root_log', 'testsite_log'],
+        'handlers': ['console', 'testsite_log'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'testsite': {
+            'handlers': ['console', 'testsite_log'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['console', ],
+            'level': getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['sql_log'],
+        }
+    }
+}

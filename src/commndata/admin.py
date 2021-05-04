@@ -7,6 +7,8 @@ from django.utils import timezone
 from commndata.forms import SuperUserAuthenticationForm, ActiveUserAuthenticationForm
 from commndata.models import BaseTable
 
+site_title = _('commndata')
+
 class SuperUserOnlyAdminSite(admin.AdminSite):
     enable_nav_sidebar = True
     _empty_value_display = '-'
