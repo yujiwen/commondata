@@ -7,8 +7,6 @@ from django.utils import timezone
 from commndata.forms import SuperUserAuthenticationForm, ActiveUserAuthenticationForm
 from commndata.models import BaseTable
 
-site_title = _('commndata')
-
 class SuperUserOnlyAdminSite(admin.AdminSite):
     enable_nav_sidebar = True
     _empty_value_display = '-'
@@ -98,6 +96,12 @@ class BaseTableAdminMixin():
         """
         return super(BaseTableAdminMixin, self).get_update_fields() + list(self.model.get_autoupdatable_fields())
     
+    def get_validity_fieldsets(self, request, obj=None):
+        return [(_('validity'), {'fields': self.model.get_validity_info_fieldsets()})] if obj else []
+
+    def get_update_info_fieldsets(self, request, obj=None):
+        return [(_('Update Information'), {'fields': self.model.get_update_info_fieldsets()})] if obj else []
+    
     def get_fieldsets(self, request, obj=None):
         """
         override of the ModelAdmin
@@ -105,27 +109,31 @@ class BaseTableAdminMixin():
         ・作成者、作成日時、更新者、更新日時をまとめて更新情報欄にて表示する
         """
 
-        def get_validity_fieldsets():
-            return [(_('validity'), {'fields': self.model.get_validity_info_fieldsets()})] if obj else []
-
-        def get_update_info_fieldsets():
-            return [(_('Update Information'), {'fields': self.model.get_update_info_fieldsets()})] if obj else []
-        
         def get_none_fieldsets():
             collected_fields = flatten(self.model.get_validity_info_fieldsets()) + flatten(self.model.get_update_info_fieldsets())
             return list(filterfalse(lambda f: f in collected_fields, self.get_fields(request, obj)))
 
-        return (self.fieldsets or [(None, {'fields': get_none_fieldsets()})]) + get_validity_fieldsets() + get_update_info_fieldsets()
+        return (self.fieldsets or [(None, {'fields': get_none_fieldsets()})]) \
+                + self.get_validity_fieldsets(request, obj) \
+                + self.get_update_info_fieldsets(request, obj)
+
+    def get_html_readonly_fields(self, request, obj=None, **kwargs):
+        if obj:
+            return self.model.get_html_readonly_fields()
+        else:
+            return (*self.model.get_html_readonly_fields(), 'delete_flag')
 
     def get_form(self, request, obj=None, **kwargs):
         """
         override of the ModelAdmin
         """
         form = super(BaseTableAdminMixin, self).get_form(request, obj, **kwargs)
-        html_readonly_fields = self.model.get_html_readonly_fields()
 
-        for field in filter(lambda f: f in form.base_fields, html_readonly_fields):
+        for field in filter(lambda f: f in form.base_fields, self.get_html_readonly_fields(request, obj, **kwargs)):
             widget = form.base_fields[field].widget
+            if widget.input_type == 'checkbox':
+                widget.attrs['disabled'] = 'true'
+            else:
             widget.attrs['readonly'] = 'true'
             widget.attrs['style'] = 'border: none transparent; outline: none'
 
@@ -149,4 +157,15 @@ class TimeLinedTableAdminMixin(BaseTableAdminMixin):
     """
     This is intended to be mixed with django.contrib.admin.ModelAdmin
     """
+    def get_validity_fieldsets(self, request, obj=None):
+        return [(_('validity'), {'fields': self.model.get_validity_info_fieldsets()})]
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        override of the ModelAdmin
+        """
+        form = super(TimeLinedTableAdminMixin, self).get_form(request, obj, **kwargs)
+
+
+        return form
 

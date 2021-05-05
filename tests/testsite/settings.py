@@ -151,8 +151,8 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '[{asctime}][{module}:{filename}:{funcName}][{levelname}][{process:d}][{thread:d}]: {message}',
-            # 'datefmt' : '%Y/%m/%d %H:%M:%S',
+            'format': '[{asctime}.{msecs:0<3.0f}][{module}:{filename}:{funcName}][{levelname}][{process:d}][{thread:d}]: {message}',
+            'datefmt' : '%Y/%m/%d %H:%M:%S',
             'style': '{',
         },
         'simple': {
@@ -207,22 +207,23 @@ LOGGING = {
     'root': {
         # 'handlers': ['console', 'root_log', 'testsite_log'],
         'handlers': ['console', 'testsite_log'],
-        'level': 'INFO',
+        'level': 'WARNING',
     },
     'loggers': {
         'testsite': {
             'handlers': ['console', 'testsite_log'],
             'level': 'INFO',
-            'propagate': True,
+            'propagate': False,
         },
         'django': {
             'handlers': ['console', ],
             'level': getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': True,
+            'propagate': False,
         },
         'django.db.backends': {
             'level': 'DEBUG',
-            'handlers': ['sql_log'],
+            'handlers': ['sql_log', 'console'],
+            'propagate': False
         }
     }
 }
