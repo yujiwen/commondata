@@ -1,6 +1,8 @@
 {
     "python.analysis.extraPaths": [
         "${workspaceFolder}\\..\\venv\\Lib\\site-packages",
+        "${workspaceFolder}\\..\\csv-with-modelform-check\\src\\checked_csv",
+        "${workspaceFolder}\\src\\commndata",
     ],
     "python.formatting.autopep8Args": [
         "--max-line-length",

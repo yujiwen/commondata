@@ -60,6 +60,32 @@ class BaseTable(models.Model):
     def get_validity_info_fieldsets():
         return [('delete_flag',)]
 
+    def optimistic_violation_check(self) -> None:
+        """
+        Optimistic violation check using version field.
+        """
+        if self.pk:
+            latest = self.__class__.objects.get(pk=self.pk)
+            if latest.version > self.version:
+                name = self._meta.verbose_name.title()
+                raise ValidationError(_('This %(name)s maybe already changed by other users. Please reopen the screen.'%{'name': name}))
+
+    def clean(self) -> None:
+        super(BaseTable, self).clean()
+
+        self.optimistic_violation_check()
+
+class TimeLinedTable(BaseTable):
+    start_date = models.DateField(verbose_name = _('start_date'), blank = False, null = False)
+    end_date = models.DateField(verbose_name = _('end_date'), blank = True, null = True)
+
+    class Meta:
+        abstract = True
+
+    @staticmethod
+    def get_validity_info_fieldsets():
+        return [('start_date', 'end_date', 'delete_flag')]
+
     @cached_property
     def get_model_unique_key(self) -> tuple:
         """
@@ -80,6 +106,10 @@ class BaseTable(models.Model):
     def get_model_unique_values(self) -> dict:
         return {k:getattr(self, k) for k in self.get_model_unique_key}
 
+    @cached_property
+    def get_model_constraint_values(self) -> dict:
+        return {k:getattr(self, k) for k in self.get_model_unique_key if k != 'start_date'}
+
     def existence_check(self):
         """
         Check whether the updating record is still existing.
@@ -90,37 +120,6 @@ class BaseTable(models.Model):
                 self.__class__.objects.get(**self.get_model_unique_values)
             except self.DoesNotExist:
                 raise ValidationError(_('This %s maybe deleted by other users, so we can not update it.' % self._meta.verbose_name.title()))
-
-    def optimistic_violation_check(self) -> None:
-        """
-        Optimistic violation check using version field.
-        """
-        if self.pk:
-            latest = self.__class__.objects.get(pk=self.pk)
-            if latest.version > self.version:
-                name = self._meta.verbose_name.title()
-                raise ValidationError(_('This %(name)s maybe already changed by other users. Please reopen the screen.'%{'name': name}))
-
-    def clean(self) -> None:
-        super(BaseTable, self).clean()
-
-       self.existence_check()
-        self.optimistic_violation_check()
-
-class TimeLinedTable(BaseTable):
-    start_date = models.DateField(verbose_name = _('start_date'), blank = False, null = False)
-    end_date = models.DateField(verbose_name = _('end_date'), blank = True, null = True)
-
-    class Meta:
-        abstract = True
-
-    @staticmethod
-    def get_validity_info_fieldsets():
-        return [('start_date', 'end_date', 'delete_flag')]
-
-    @cached_property
-    def get_model_constraint_values(self) -> dict:
-        return {k:getattr(self, k) for k in self.get_model_unique_key if k != 'start_date'}
 
     @cached_property
     def newer_record(self):
@@ -152,9 +151,11 @@ class TimeLinedTable(BaseTable):
 
     def clean(self) -> None:
         super(TimeLinedTable, self).clean()
+
         try:
-        # If already has a newer record, editing is disabled
-        if self.newer_record and self != self.newer_record:
+            orginal_record = self.__class__.objects.get(pk=self.pk)
+            # If already has a newer record, editing is disabled
+            if self.newer_record and self != self.newer_record:
                 start_date_field = self._meta.get_field('start_date').verbose_name
                 raise ValidationError(_('There is a record, which has a newer %s, so we can not save this record.' % start_date_field))
         except ObjectDoesNotExist:
