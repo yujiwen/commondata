@@ -7,6 +7,13 @@ from django.utils import timezone
 from commndata.forms import SuperUserAuthenticationForm, ActiveUserAuthenticationForm
 from commndata.models import BaseTable
 
+
+def disable_field(widget):
+    if widget.input_type == 'checkbox':
+        widget.attrs['disabled'] = 'true'
+    else:
+        widget.attrs['readonly'] = 'true'
+        widget.attrs['style'] = 'border: none transparent; outline: none'
 class SuperUserOnlyAdminSite(admin.AdminSite):
     enable_nav_sidebar = True
     _empty_value_display = '-'
@@ -129,13 +136,9 @@ class BaseTableAdminMixin():
         """
         form = super(BaseTableAdminMixin, self).get_form(request, obj, **kwargs)
 
-        for field in filter(lambda f: f in form.base_fields, self.get_html_readonly_fields(request, obj, **kwargs)):
-            widget = form.base_fields[field].widget
-            if widget.input_type == 'checkbox':
-                widget.attrs['disabled'] = 'true'
-            else:
-            widget.attrs['readonly'] = 'true'
-            widget.attrs['style'] = 'border: none transparent; outline: none'
+        readonly_field_widgets = [form.base_fields[f].widget for f in form.base_fields if f in self.get_html_readonly_fields(request, obj, **kwargs)]
+        for widget in readonly_field_widgets:
+            disable_field(widget)
 
         return form
 
@@ -165,7 +168,9 @@ class TimeLinedTableAdminMixin(BaseTableAdminMixin):
         override of the ModelAdmin
         """
         form = super(TimeLinedTableAdminMixin, self).get_form(request, obj, **kwargs)
-
+        if obj and obj.newer_record:
+            for widget in [form.base_fields[f].widget for f in form.base_fields]:
+                disable_field(widget)
 
         return form
 

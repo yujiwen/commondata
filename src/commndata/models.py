@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 import datetime
-from django.contrib.admin import utils
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your models here.
 class BaseTable(models.Model):
@@ -104,7 +104,7 @@ class BaseTable(models.Model):
     def clean(self) -> None:
         super(BaseTable, self).clean()
 
-        self.existence_check()
+       self.existence_check()
         self.optimistic_violation_check()
 
 class TimeLinedTable(BaseTable):
@@ -152,10 +152,14 @@ class TimeLinedTable(BaseTable):
 
     def clean(self) -> None:
         super(TimeLinedTable, self).clean()
+        try:
         # If already has a newer record, editing is disabled
         if self.newer_record and self != self.newer_record:
                 start_date_field = self._meta.get_field('start_date').verbose_name
                 raise ValidationError(_('There is a record, which has a newer %s, so we can not save this record.' % start_date_field))
+        except ObjectDoesNotExist:
+            # This error should be already captured by other validations, so we ignore it here.
+            pass
 
     def save(self):
         if self.older_record:
