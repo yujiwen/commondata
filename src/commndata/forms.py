@@ -1,7 +1,7 @@
 from django.contrib.admin.forms import AdminAuthenticationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
+from django.forms import ModelForm
 
 class SuperUserAuthenticationForm(AdminAuthenticationForm):
     """
@@ -32,3 +32,10 @@ class ActiveUserAuthenticationForm(AuthenticationForm):
     def confirm_login_allowed(self, user):
         super(ActiveUserAuthenticationForm, self).confirm_login_allowed(user)
 
+class BaseTableForm(ModelForm):
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+        if start_date and end_date and start_date > end_date:
+            raise ValidationError(_('The %s must be newer then %s.' % 'end_data', 'start_date'))

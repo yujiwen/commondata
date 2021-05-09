@@ -144,7 +144,7 @@ class TimeLinedTable(BaseTable):
             if newer_record and self != newer_record:
                 # name = self._meta.verbose_name.title()
                 raise ValidationError(_('We have a newer %s, so we can not save this record.' % self))
-        except ObjectDoesNotExist:
+        except (ObjectDoesNotExist, ValueError):
             # This error should be already captured by other validations, so we ignore it here.
             pass
 
