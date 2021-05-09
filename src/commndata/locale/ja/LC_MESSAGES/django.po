@@ -307,5 +307,3 @@ msgstr "値"
 msgid "code master"
 msgstr "コードマスタ"
 
-#~ msgid "commndata"
-#~ msgstr "共通情報"

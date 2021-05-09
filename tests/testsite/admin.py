@@ -29,8 +29,8 @@ admin.site.register(CodeCategory, CodeCategoryModelAdmin)
 
 @admin.register(CodeMaster)
 class CodeMasterModelAdmin(TimeLinedTableAdminMixin, CsvExportModelMixin, CsvImportModelMixin, ModelAdmin):
-    list_display = ['codecategory', 'code', 'name', 'start_date', 'end_date', 'delete_flag']
-    list_filter = ['codecategory__name', 'start_date', 'delete_flag']
+    list_display = ['codecategory', 'code', 'name', 'start_date', 'end_date']
+    list_filter = ['codecategory__name', 'start_date']
     search_fields = ('codecategory__name', 'name')
     date_hierarchy = 'start_date'
 

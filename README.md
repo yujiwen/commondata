@@ -9,7 +9,6 @@ Collected some commonly used table columns to BaseTable and TimeLinedTable.
   - creator
   - updated_at
   - updater
-  - delete_flag
 - BaseTable's optimistic lock
   - for update, we execute an optimistic concurrency check using version field.
 

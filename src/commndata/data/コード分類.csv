@@ -1,2 +1,2 @@
-id,delete_flag,codecategory,name,display_order
-1,False,sex,性別,1
+id,codecategory,name,display_order
+1,sex,性別,1

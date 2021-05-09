@@ -3,7 +3,6 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
-import datetime
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your models here.
@@ -13,7 +12,6 @@ class BaseTable(models.Model):
     creator = models.CharField(max_length = 120, verbose_name = _('creator'), blank = False, serialize=False)
     updated_at = models.DateTimeField(verbose_name = _('updated_at'), blank = False, serialize=False)
     updater = models.CharField(max_length = 120, verbose_name = _('updater'), blank = False, serialize=False)
-    delete_flag = models.BooleanField(blank=False, verbose_name = _('delete flag'), null=False, default=False)
 
     class Meta:
         abstract = True
@@ -58,7 +56,7 @@ class BaseTable(models.Model):
 
     @staticmethod
     def get_validity_info_fieldsets():
-        return [('delete_flag',)]
+        return ()
 
     def optimistic_violation_check(self) -> None:
         """
@@ -67,8 +65,8 @@ class BaseTable(models.Model):
         if self.pk:
             latest = self.__class__.objects.get(pk=self.pk)
             if latest.version > self.version:
-                name = self._meta.verbose_name.title()
-                raise ValidationError(_('This %(name)s maybe already changed by other users. Please reopen the screen.'%{'name': name}))
+                # name = self._meta.verbose_name.title()
+                raise ValidationError(_('This %(name)s maybe already changed by other users. Please reopen the screen.'%{'name': self}))
 
     def clean(self) -> None:
         super(BaseTable, self).clean()
@@ -84,13 +82,14 @@ class TimeLinedTable(BaseTable):
 
     @staticmethod
     def get_validity_info_fieldsets():
-        return [('start_date', 'end_date', 'delete_flag')]
+        return [('start_date', 'end_date')]
 
     @cached_property
     def get_model_unique_key(self) -> tuple:
         """
         Get a unique constraint named after the model, if there is one.
         All fields contained in this unique constraint is supposed to be not nullable.
+        For example: model CodeMaster's supposed unique constraint name is 'codemaster_unique'.
         """
         if not self._meta.constraints:
             return ()
@@ -110,68 +109,48 @@ class TimeLinedTable(BaseTable):
     def get_model_constraint_values(self) -> dict:
         return {k:getattr(self, k) for k in self.get_model_unique_key if k != 'start_date'}
 
-    def existence_check(self):
-        """
-        Check whether the updating record is still existing.
-        For new registration, django will check the uniqueness.
-        """
-        if self.pk:
-            try:
-                self.__class__.objects.get(**self.get_model_unique_values)
-            except self.DoesNotExist:
-                raise ValidationError(_('This %s maybe deleted by other users, so we can not update it.' % self._meta.verbose_name.title()))
-
-    @cached_property
     def newer_record(self):
         """
             Detect if there is a record with a newer start_date.
             Here the unique constraint must contains a start_date field.
         """
         newer_records = self.__class__.objects.filter(**self.get_model_constraint_values) \
-                        .filter(delete_flag=False, start_date__gt=self.start_date) \
+                        .filter(start_date__gt=self.start_date) \
                         .order_by('start_date')
         if newer_records:
             return newer_records[0]
         else:
             None
     
-    @cached_property
     def older_record(self):
-
         """
             Detect if there is a record with a older start_date.
+            Here the unique constraint must contains a start_date field.
         """
         older_records = self.__class__.objects.filter(**self.get_model_constraint_values) \
-                        .filter(delete_flag=False, start_date__lt=self.start_date) \
+                        .filter(start_date__lt=self.start_date) \
                         .order_by('-start_date')
         if older_records:
             return older_records[0]
         else:
             None
 
-    def clean(self) -> None:
-        super(TimeLinedTable, self).clean()
-
+    def history_check(self):
+        """
+        If there is a newer record(start_date is newer), then create and update are not allowed.
+        """
         try:
-            orginal_record = self.__class__.objects.get(pk=self.pk)
-            # If already has a newer record, editing is disabled
-            if self.newer_record and self != self.newer_record:
-                start_date_field = self._meta.get_field('start_date').verbose_name
-                raise ValidationError(_('There is a record, which has a newer %s, so we can not save this record.' % start_date_field))
+            newer_record = self.newer_record()
+            if newer_record and self != newer_record:
+                # name = self._meta.verbose_name.title()
+                raise ValidationError(_('We have a newer %s, so we can not save this record.' % self))
         except ObjectDoesNotExist:
             # This error should be already captured by other validations, so we ignore it here.
             pass
 
-    def save(self):
-        if self.older_record:
-            self.older_record.end_date = self.start_date - datetime.timedelta(days=1)
-            self.older_record.set_update_values(self.updater)
-            self.older_record.save()
-
-        if self.newer_record:
-            self.end_date = self.newer_record.start_date - datetime.timedelta(days=1)
-        
-        super(TimeLinedTable, self).save()
+    def clean(self) -> None:
+        super(TimeLinedTable, self).clean()
+        self.history_check()
 
 class CodeCategory(BaseTable):
     codecategory = models.CharField(max_length=32, verbose_name=_('code category'))

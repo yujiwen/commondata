@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.admin.utils import flatten
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+import datetime
 
 from commndata.forms import SuperUserAuthenticationForm, ActiveUserAuthenticationForm
 from commndata.models import BaseTable
@@ -104,11 +105,17 @@ class BaseTableAdminMixin():
         return super(BaseTableAdminMixin, self).get_update_fields() + list(self.model.get_autoupdatable_fields())
     
     def get_validity_fieldsets(self, request, obj=None):
-        return [(_('validity'), {'fields': self.model.get_validity_info_fieldsets()})] if obj else []
+        if self.model.get_validity_info_fieldsets():
+            return [(_('validity'), {'fields': self.model.get_validity_info_fieldsets()})] if obj else []
+        else:
+            return []
 
     def get_update_info_fieldsets(self, request, obj=None):
-        return [(_('Update Information'), {'fields': self.model.get_update_info_fieldsets()})] if obj else []
-    
+        if self.model.get_update_info_fieldsets():
+            return [(_('Update Information'), {'fields': self.model.get_update_info_fieldsets()})] if obj else []
+        else:
+            return []
+
     def get_fieldsets(self, request, obj=None):
         """
         override of the ModelAdmin
@@ -125,10 +132,7 @@ class BaseTableAdminMixin():
                 + self.get_update_info_fieldsets(request, obj)
 
     def get_html_readonly_fields(self, request, obj=None, **kwargs):
-        if obj:
-            return self.model.get_html_readonly_fields()
-        else:
-            return (*self.model.get_html_readonly_fields(), 'delete_flag')
+        return self.model.get_html_readonly_fields()
 
     def get_form(self, request, obj=None, **kwargs):
         """
@@ -168,9 +172,18 @@ class TimeLinedTableAdminMixin(BaseTableAdminMixin):
         override of the ModelAdmin
         """
         form = super(TimeLinedTableAdminMixin, self).get_form(request, obj, **kwargs)
-        if obj and obj.newer_record:
+        if obj and obj.newer_record():
             for widget in [form.base_fields[f].widget for f in form.base_fields]:
                 disable_field(widget)
 
         return form
 
+    def save_model(self, request, obj, form, change):
+        if change:
+            older_record = obj.older_record()
+            if older_record and obj != older_record:
+                older_record.end_date = obj.start_date - datetime.timedelta(days=1)
+                older_record.set_update_values(request.user.username)
+                older_record.save()
+        
+        super(TimeLinedTableAdminMixin, self).save_model(request, obj, form, change)
