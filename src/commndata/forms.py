@@ -38,4 +38,7 @@ class BaseTableForm(ModelForm):
         start_date = cleaned_data.get('start_date')
         end_date = cleaned_data.get('end_date')
         if start_date and end_date and start_date > end_date:
-            raise ValidationError(_('The %s must be newer then %s.' % 'end_data', 'start_date'))
+            # opts = self._meta.model._meta
+            end_label = self.fields['end_date'].label
+            start_label = self.fields['start_date'].label
+            raise ValidationError(_('The %(end_date)s must be newer then %(start_date)s.' % {'end_date': end_label, 'start_date': start_label}))

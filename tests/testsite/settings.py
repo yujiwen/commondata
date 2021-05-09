@@ -110,7 +110,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 # LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'ja'
+# LANGUAGE_CODE = 'ja'
+LANGUAGES = (
+    ('en', 'English'),
+    ('ja', 'Japanese'),
+)
+
 
 # TIME_ZONE = 'UTC'
 TIME_ZONE = 'Asia/Tokyo'
@@ -131,11 +136,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LANGUAGES = (
-    ('en', 'English'),
-    ('ja', 'Japanese'),
-)
 
 USE_THOUSAND_SEPARATOR = True
 NUMBER_GROUPING = (3, 0)

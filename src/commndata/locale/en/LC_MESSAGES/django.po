@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-03 22:31+0900\n"
+"POT-Creation-Date: 2021-05-09 22:29+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: .\src\commndata\admin.py:10
-msgid "commndata"
-msgstr "Common Data"
 
-#: .\src\commndata\admin.py:109
+#: .\src\commndata\admin.py:109 .\src\commndata\admin.py:168
 msgid "validity"
 msgstr ""
 
-#: .\src\commndata\admin.py:112
+#: .\src\commndata\admin.py:115
 msgid "Update Information"
+msgstr ""
+
+#: .\src\commndata\apps.py:7
+msgid "Common Data"
 msgstr ""
 
 #: .\src\commndata\codes.py:4
@@ -236,61 +237,70 @@ msgid ""
 "Note that both fields may be case-sensitive."
 msgstr ""
 
-#: .\src\commndata\models.py:8
-msgid "version"
-msgstr ""
-
-#: .\src\commndata\models.py:9
-msgid "created_at"
+#: .\src\commndata\forms.py:44
+#, python-format
+msgid "The %(end_date)s must be newer then %(start_date)s."
 msgstr ""
 
 #: .\src\commndata\models.py:10
-msgid "creator"
+msgid "version"
 msgstr ""
 
 #: .\src\commndata\models.py:11
-msgid "updated_at"
+msgid "created_at"
 msgstr ""
 
 #: .\src\commndata\models.py:12
-msgid "updater"
+msgid "creator"
 msgstr ""
 
 #: .\src\commndata\models.py:13
-msgid "delete flag"
+msgid "updated_at"
 msgstr ""
 
-#: .\src\commndata\models.py:68
+#: .\src\commndata\models.py:14
+msgid "updater"
+msgstr ""
+
+#: .\src\commndata\models.py:69
 #, python-format
 msgid ""
 "This %(name)s maybe already changed by other users. Please reopen the screen."
 msgstr ""
 
-#: .\src\commndata\models.py:75
+#: .\src\commndata\models.py:77
 msgid "start_date"
-msgstr ""
+msgstr "Start Date"
 
-#: .\src\commndata\models.py:76
+#: .\src\commndata\models.py:78
 msgid "end_date"
+msgstr "End Date"
+
+#: .\src\commndata\models.py:146
+#, python-format
+msgid "We have a newer %(obj_name)s record, so we can not save this record."
 msgstr ""
 
-#: .\src\commndata\models.py:86 .\src\commndata\models.py:91
-#: .\src\commndata\models.py:92 .\src\commndata\models.py:106
+#: .\src\commndata\models.py:156 .\src\commndata\models.py:161
+#: .\src\commndata\models.py:162 .\src\commndata\models.py:176
 msgid "code category"
-msgstr ""
+msgstr "Code Category"
 
-#: .\src\commndata\models.py:87 .\src\commndata\models.py:108
+#: .\src\commndata\models.py:157 .\src\commndata\models.py:178
 msgid "name"
-msgstr ""
+msgstr "Name"
 
-#: .\src\commndata\models.py:107
+#: .\src\commndata\models.py:177
 msgid "code"
-msgstr ""
+msgstr "Code"
 
-#: .\src\commndata\models.py:109
+#: .\src\commndata\models.py:179
 msgid "value"
-msgstr ""
+msgstr "Value"
 
-#: .\src\commndata\models.py:113 .\src\commndata\models.py:114
+#: .\src\commndata\models.py:183 .\src\commndata\models.py:184
 msgid "code master"
-msgstr ""
+msgstr "Code Master"
+
+#~ msgid "commndata"
+#~ msgstr "Common Data"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-08 21:52+0900\n"
+"POT-Creation-Date: 2021-05-09 22:30+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\src\commndata\admin.py:107 .\src\commndata\admin.py:164
+#: .\src\commndata\admin.py:109 .\src\commndata\admin.py:168
 msgid "validity"
 msgstr "有効性"
 
-#: .\src\commndata\admin.py:110
+#: .\src\commndata\admin.py:115
 msgid "Update Information"
 msgstr "更新情報"
 
@@ -237,36 +237,32 @@ msgid ""
 "Note that both fields may be case-sensitive."
 msgstr ""
 
-#: .\src\commndata\models.py:11
+#: .\src\commndata\forms.py:44
+#, python-format
+msgid "The %(end_date)s must be newer then %(start_date)s."
+msgstr "%(end_date)sには%(start_date)sより新しい日付を入力してください。"
+
+#: .\src\commndata\models.py:10
 msgid "version"
 msgstr "バージョン"
 
-#: .\src\commndata\models.py:12
+#: .\src\commndata\models.py:11
 msgid "created_at"
 msgstr "作成日時"
 
-#: .\src\commndata\models.py:13
+#: .\src\commndata\models.py:12
 msgid "creator"
 msgstr "作成者"
 
-#: .\src\commndata\models.py:14
+#: .\src\commndata\models.py:13
 msgid "updated_at"
 msgstr "更新日時"
 
-#: .\src\commndata\models.py:15
+#: .\src\commndata\models.py:14
 msgid "updater"
 msgstr "更新者"
 
-#: .\src\commndata\models.py:16
-msgid "delete flag"
-msgstr "削除フラグ"
-
-#: .\src\commndata\models.py:92
-msgid "This %s maybe deleted by other users, so we can not update it."
-msgstr ""
-"%(name)sが他のユーザーより削除された可能性がありますので、更新することができません。"
-
-#: .\src\commndata\models.py:102
+#: .\src\commndata\models.py:69
 #, python-format
 msgid ""
 "This %(name)s maybe already changed by other users. Please reopen the screen."
@@ -274,36 +270,38 @@ msgstr ""
 "%(name)sが他のユーザーより変更された可能性があります。本画面を再表示して情報"
 "を更新してください。"
 
-#: .\src\commndata\models.py:111
+#: .\src\commndata\models.py:77
 msgid "start_date"
 msgstr "開始日"
 
-#: .\src\commndata\models.py:112
+#: .\src\commndata\models.py:78
 msgid "end_date"
 msgstr "終了日"
 
-#: .\src\commndata\models.py:159
-msgid "There is a record, which has a newer %s, so we can not save this record."
-msgstr "もっと新しいレコードが存在するので、本レコードを保存することができません。"
+#: .\src\commndata\models.py:146
+#, python-format
+msgid "We have a newer %(obj_name)s record, so we can not save this record."
+msgstr ""
+"もっと新しい%(obj_name)sレコードが存在するので、本レコードを保存することがで"
+"きません。"
 
-#: .\src\commndata\models.py:176 .\src\commndata\models.py:181
-#: .\src\commndata\models.py:182 .\src\commndata\models.py:196
+#: .\src\commndata\models.py:156 .\src\commndata\models.py:161
+#: .\src\commndata\models.py:162 .\src\commndata\models.py:176
 msgid "code category"
 msgstr "コード分類"
 
-#: .\src\commndata\models.py:177 .\src\commndata\models.py:198
+#: .\src\commndata\models.py:157 .\src\commndata\models.py:178
 msgid "name"
 msgstr "名称"
 
-#: .\src\commndata\models.py:197
+#: .\src\commndata\models.py:177
 msgid "code"
 msgstr "コード"
 
-#: .\src\commndata\models.py:199
+#: .\src\commndata\models.py:179
 msgid "value"
 msgstr "値"
 
-#: .\src\commndata\models.py:203 .\src\commndata\models.py:204
+#: .\src\commndata\models.py:183 .\src\commndata\models.py:184
 msgid "code master"
 msgstr "コードマスタ"
-
