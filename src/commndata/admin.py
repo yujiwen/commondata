@@ -73,6 +73,8 @@ class BaseTableAdminMixin():
     """
     This is intended to be mixed with django.contrib.admin.ModelAdmin, and used to register BaseTable class
     """
+    save_on_top = False
+
     def get_readonly_fields(self, request, obj=None) -> tuple[str]:
         """
         override of the ModelAdmin
@@ -164,19 +166,41 @@ class TimeLinedTableAdminMixin(BaseTableAdminMixin):
     """
     This is intended to be mixed with django.contrib.admin.ModelAdmin
     """
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['show_save_and_add_another'] = False
+        extra_context['show_save_and_continue'] = False
+        extra_context['show_close'] = True
+        return super(TimeLinedTableAdminMixin, self).changeform_view(request, object_id, form_url, extra_context)
+    
+    def has_delete_permission(self, request, obj=None):
+        """
+        """
+        if obj and obj.newer_record():
+            return False
+        else:
+            return super(TimeLinedTableAdminMixin, self).has_delete_permission(request, obj)
+
+    def has_change_permission(self, request, obj=None):
+        if obj and obj.newer_record():
+            return False
+        else:
+            return super(TimeLinedTableAdminMixin, self).has_change_permission(request, obj)
+
+
     def get_validity_fieldsets(self, request, obj=None):
         return [(_('validity'), {'fields': self.model.get_validity_info_fieldsets()})]
 
-    def get_form(self, request, obj=None, **kwargs):
-        """
-        override of the ModelAdmin
-        """
-        form = super(TimeLinedTableAdminMixin, self).get_form(request, obj, **kwargs)
-        if obj and obj.newer_record():
-            for widget in [form.base_fields[f].widget for f in form.base_fields]:
-                disable_field(widget)
+    # def get_form(self, request, obj=None, **kwargs):
+    #     """
+    #     Just the newest record is editable, the older records are disable to editing.
+    #     """
+    #     form = super(TimeLinedTableAdminMixin, self).get_form(request, obj, **kwargs)
+    #     if obj and obj.newer_record():
+    #         for widget in [form.base_fields[f].widget for f in form.base_fields]:
+    #             disable_field(widget)
 
-        return form
+    #     return form
 
     def save_model(self, request, obj, form, change):
         if change:

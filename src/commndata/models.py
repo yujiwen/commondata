@@ -15,7 +15,13 @@ class BaseTable(models.Model):
 
     class Meta:
         abstract = True
-    
+
+    error_messages = {
+        'optimistic_exclusion_violation': _(
+            'This %(instance_name)s maybe already changed by other users. Please reopen the screen.'
+        ),
+    }
+
     @staticmethod
     def get_init_values(username: str):
         return  {
@@ -58,7 +64,7 @@ class BaseTable(models.Model):
     def get_validity_info_fieldsets():
         return ()
 
-    def optimistic_violation_check(self) -> None:
+    def optimistic_exclusion_check(self) -> None:
         """
         Optimistic violation check using version field.
         """
@@ -66,12 +72,16 @@ class BaseTable(models.Model):
             latest = self.__class__.objects.get(pk=self.pk)
             if latest.version > self.version:
                 # name = self._meta.verbose_name.title()
-                raise ValidationError(_('This %(name)s maybe already changed by other users. Please reopen the screen.'%{'name': self}))
+                raise ValidationError(
+                    self.error_messages['optimistic_exclusion_violation'],
+                    code = 'optimistic_exclusion_violation',
+                    params={'instance_name': self}
+                )
 
     def clean(self) -> None:
         super(BaseTable, self).clean()
 
-        self.optimistic_violation_check()
+        self.optimistic_exclusion_check()
 
 class TimeLinedTable(BaseTable):
     start_date = models.DateField(verbose_name = _('start_date'), blank = False, null = False)
@@ -79,6 +89,13 @@ class TimeLinedTable(BaseTable):
 
     class Meta:
         abstract = True
+
+    error_messages = {
+        **BaseTable.error_messages,
+        'uneditable_history': _(
+            'We have a newer %(instance_name)s record, so we can not save this record.'
+        ),
+    }
 
     @staticmethod
     def get_validity_info_fieldsets():
@@ -143,7 +160,11 @@ class TimeLinedTable(BaseTable):
             newer_record = self.newer_record()
             if newer_record and self != newer_record:
                 # name = self._meta.verbose_name.title()
-                raise ValidationError(_('We have a newer %(obj_name)s record, so we can not save this record.' % {'obj_name': self}))
+                raise ValidationError(
+                    self.error_messages['uneditable_history'],
+                    code = 'uneditable_history',
+                    params={'instance_name': self}
+                )
         except (ObjectDoesNotExist, ValueError):
             # This error should be already captured by other validations, so we ignore it here.
             pass

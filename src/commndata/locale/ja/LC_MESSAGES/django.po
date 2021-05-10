@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-09 22:30+0900\n"
+"POT-Creation-Date: 2021-05-11 03:50+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,7 +237,7 @@ msgid ""
 "Note that both fields may be case-sensitive."
 msgstr ""
 
-#: .\src\commndata\forms.py:44
+#: .\src\commndata\forms.py:38
 #, python-format
 msgid "The %(end_date)s must be newer then %(start_date)s."
 msgstr "%(end_date)sには%(start_date)sより新しい日付を入力してください。"
@@ -262,46 +262,46 @@ msgstr "更新日時"
 msgid "updater"
 msgstr "更新者"
 
-#: .\src\commndata\models.py:69
+#: .\src\commndata\models.py:21
 #, python-format
 msgid ""
-"This %(name)s maybe already changed by other users. Please reopen the screen."
+"This %(instance_name)s maybe already changed by other users. Please reopen "
+"the screen."
 msgstr ""
-"%(name)sが他のユーザーより変更された可能性があります。本画面を再表示して情報"
-"を更新してください。"
+"%(instance_name)sが他のユーザーより変更された可能性があります。本画面を再表示してください。"
 
-#: .\src\commndata\models.py:77
+#: .\src\commndata\models.py:87
 msgid "start_date"
 msgstr "開始日"
 
-#: .\src\commndata\models.py:78
+#: .\src\commndata\models.py:88
 msgid "end_date"
 msgstr "終了日"
 
-#: .\src\commndata\models.py:146
+#: .\src\commndata\models.py:96
 #, python-format
-msgid "We have a newer %(obj_name)s record, so we can not save this record."
+msgid ""
+"We have a newer %(instance_name)s record, so we can not save this record."
 msgstr ""
-"もっと新しい%(obj_name)sレコードが存在するので、本レコードを保存することがで"
-"きません。"
+"もっと新しい%(instance_name)sレコードが存在するので、今の情報を保存することができません。"
 
-#: .\src\commndata\models.py:156 .\src\commndata\models.py:161
-#: .\src\commndata\models.py:162 .\src\commndata\models.py:176
+#: .\src\commndata\models.py:177 .\src\commndata\models.py:182
+#: .\src\commndata\models.py:183 .\src\commndata\models.py:197
 msgid "code category"
 msgstr "コード分類"
 
-#: .\src\commndata\models.py:157 .\src\commndata\models.py:178
+#: .\src\commndata\models.py:178 .\src\commndata\models.py:199
 msgid "name"
 msgstr "名称"
 
-#: .\src\commndata\models.py:177
+#: .\src\commndata\models.py:198
 msgid "code"
 msgstr "コード"
 
-#: .\src\commndata\models.py:179
+#: .\src\commndata\models.py:200
 msgid "value"
 msgstr "値"
 
-#: .\src\commndata\models.py:183 .\src\commndata\models.py:184
+#: .\src\commndata\models.py:204 .\src\commndata\models.py:205
 msgid "code master"
 msgstr "コードマスタ"
