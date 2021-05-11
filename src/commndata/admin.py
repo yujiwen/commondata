@@ -166,7 +166,7 @@ class TimeLinedTableAdminMixin(BaseTableAdminMixin):
     """
     This is intended to be mixed with django.contrib.admin.ModelAdmin
     """
-    def change_view(self, request, object_id, form_url='', extra_context=None):
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
         extra_context = extra_context or {}
         extra_context['show_save_and_add_another'] = False
         extra_context['show_save_and_continue'] = False
