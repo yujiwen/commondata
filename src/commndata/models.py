@@ -50,7 +50,7 @@ class BaseTable(models.Model):
         """
         By means of HTML, they are input tags with readonly attribute.
         """
-        return {'version'}
+        return ('version',)
 
     @staticmethod
     def get_autoupdatable_fields():
@@ -63,6 +63,27 @@ class BaseTable(models.Model):
     @staticmethod
     def get_validity_info_fieldsets():
         return ()
+
+    @cached_property
+    def get_model_unique_key(self) -> tuple:
+        """
+        Get a unique constraint named after the model, if there is one.
+        All fields contained in this unique constraint is supposed to be not nullable.
+        For example: model CodeMaster's supposed unique constraint name is 'codemaster_unique'.
+        """
+        if not self._meta.constraints:
+            return ()
+
+        unique_constraint_name = '%s_unique' % self._meta.model_name
+        unique_constraint = next(filter(lambda c: c.name == unique_constraint_name, self._meta.constraints), None)
+        if not unique_constraint:
+            return ()
+
+        return unique_constraint.fields
+    
+    @cached_property
+    def get_model_unique_values(self) -> dict:
+        return {k:getattr(self, k) for k in self.get_model_unique_key}
 
     def optimistic_exclusion_check(self) -> None:
         """
@@ -100,27 +121,6 @@ class TimeLinedTable(BaseTable):
     @staticmethod
     def get_validity_info_fieldsets():
         return [('start_date', 'end_date')]
-
-    @cached_property
-    def get_model_unique_key(self) -> tuple:
-        """
-        Get a unique constraint named after the model, if there is one.
-        All fields contained in this unique constraint is supposed to be not nullable.
-        For example: model CodeMaster's supposed unique constraint name is 'codemaster_unique'.
-        """
-        if not self._meta.constraints:
-            return ()
-
-        unique_constraint_name = '%s_unique' % self._meta.model_name
-        unique_constraint = next(filter(lambda c: c.name == unique_constraint_name, self._meta.constraints), None)
-        if not unique_constraint:
-            return ()
-
-        return unique_constraint.fields
-    
-    @cached_property
-    def get_model_unique_values(self) -> dict:
-        return {k:getattr(self, k) for k in self.get_model_unique_key}
 
     @cached_property
     def get_model_constraint_values(self) -> dict:

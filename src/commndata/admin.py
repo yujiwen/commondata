@@ -4,17 +4,25 @@ from django.contrib.admin.utils import flatten
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 import datetime
+from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
 
 from commndata.forms import SuperUserAuthenticationForm, ActiveUserAuthenticationForm
 from commndata.models import BaseTable
 
 
 def disable_field(widget):
-    if widget.input_type == 'checkbox':
-        widget.attrs['disabled'] = 'true'
-    else:
-        widget.attrs['readonly'] = 'true'
-        widget.attrs['style'] = 'border: none transparent; outline: none'
+    # RadioSelect, ClearableFileInput,ForeignKeyRawIdWidget
+    if hasattr(widget, 'input_type'):
+        if widget.input_type == 'checkbox':
+            widget.attrs['disabled'] = 'true'
+        else:
+            widget.attrs['readonly'] = 'true'
+            widget.attrs['style'] = 'border: none transparent; outline: none'
+    elif issubclass(widget.__class__, RelatedFieldWidgetWrapper):
+        widget.can_view_related = False
+        widget.widget.attrs['disabled'] = 'true'
+
+
 class SuperUserOnlyAdminSite(admin.AdminSite):
     enable_nav_sidebar = True
     _empty_value_display = '-'
@@ -134,7 +142,10 @@ class BaseTableAdminMixin():
                 + self.get_update_info_fieldsets(request, obj)
 
     def get_html_readonly_fields(self, request, obj=None, **kwargs):
-        return self.model.get_html_readonly_fields()
+        if obj:
+            return self.model.get_html_readonly_fields() + obj.get_model_unique_key
+        else:
+            return self.model.get_html_readonly_fields()
 
     def get_form(self, request, obj=None, **kwargs):
         """
@@ -190,17 +201,6 @@ class TimeLinedTableAdminMixin(BaseTableAdminMixin):
 
     def get_validity_fieldsets(self, request, obj=None):
         return [(_('validity'), {'fields': self.model.get_validity_info_fieldsets()})]
-
-    # def get_form(self, request, obj=None, **kwargs):
-    #     """
-    #     Just the newest record is editable, the older records are disable to editing.
-    #     """
-    #     form = super(TimeLinedTableAdminMixin, self).get_form(request, obj, **kwargs)
-    #     if obj and obj.newer_record():
-    #         for widget in [form.base_fields[f].widget for f in form.base_fields]:
-    #             disable_field(widget)
-
-    #     return form
 
     def save_model(self, request, obj, form, change):
         if change:

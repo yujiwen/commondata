@@ -35,10 +35,4 @@ class CodeMasterModelAdmin(TimeLinedTableAdminMixin, CsvExportModelMixin, CsvImp
     search_fields = ('codecategory__name', 'name')
     date_hierarchy = 'start_date'
 
-    def get_readonly_fields(self, request, obj=None):
-        fields = super(CodeMasterModelAdmin, self).get_readonly_fields(request, obj)
-        if obj:
-            return (*fields, 'codecategory')
-        else:
-            return fields
 

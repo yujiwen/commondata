@@ -15,7 +15,7 @@
             "django": true,
             "stopOnEntry": false,
             "justMyCode": false,
-            // "python": "${command:python.interpreterPath}"
+            "python": "${command:python.interpreterPath}"
         }
     ]
 }
