@@ -11,16 +11,22 @@ from commndata.models import BaseTable
 
 
 def disable_field(widget):
+    def set_disable(item):
+        item.attrs['style'] = 'pointer-events:none; opacity:0.7;'
+
     # RadioSelect, ClearableFileInput,ForeignKeyRawIdWidget
     if hasattr(widget, 'input_type'):
         if widget.input_type == 'checkbox':
-            widget.attrs['disabled'] = 'true'
+            set_disable(widget)
         else:
             widget.attrs['readonly'] = 'true'
             widget.attrs['style'] = 'border: none transparent; outline: none'
     elif issubclass(widget.__class__, RelatedFieldWidgetWrapper):
+        widget.can_add_related = False
+        widget.can_change_related = False
+        widget.can_delete_related = False
         widget.can_view_related = False
-        widget.widget.attrs['disabled'] = 'true'
+        set_disable(widget.widget)
 
 
 class SuperUserOnlyAdminSite(admin.AdminSite):
@@ -211,3 +217,14 @@ class TimeLinedTableAdminMixin(BaseTableAdminMixin):
                 older_record.save()
         
         super(TimeLinedTableAdminMixin, self).save_model(request, obj, form, change)
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        override of the ModelAdmin
+        """
+        form = super(TimeLinedTableAdminMixin, self).get_form(request, obj, **kwargs)
+
+        if not obj:
+            form.base_fields['start_date'].initial = datetime.date.today
+    
+        return form
