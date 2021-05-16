@@ -32,7 +32,7 @@ class ActiveUserAuthenticationForm(AuthenticationForm):
     def confirm_login_allowed(self, user):
         super(ActiveUserAuthenticationForm, self).confirm_login_allowed(user)
 
-class BaseTableForm(ModelForm):
+class TimeLinedTable(ModelForm):
     error_messages = {
         'invalid_period': _(
             'The %(end_date)s must be newer then %(start_date)s.'

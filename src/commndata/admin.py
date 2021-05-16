@@ -4,30 +4,35 @@ from django.contrib.admin.utils import flatten
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 import datetime
-from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
+from django.contrib.admin.widgets import AdminDateWidget, AdminSplitDateTime, RelatedFieldWidgetWrapper
 
 from commndata.forms import SuperUserAuthenticationForm, ActiveUserAuthenticationForm
 from commndata.models import BaseTable
 
-
-def disable_field(widget):
+def disable_fields(form, disabled_fields):
     def set_disable(item):
         item.attrs['style'] = 'pointer-events:none; opacity:0.7;'
 
-    # RadioSelect, ClearableFileInput,ForeignKeyRawIdWidget
-    if hasattr(widget, 'input_type'):
-        if widget.input_type == 'checkbox':
+    def disable_field(widget):
+        # RadioSelect, ClearableFileInput,ForeignKeyRawIdWidget
+        if issubclass(widget.__class__, RelatedFieldWidgetWrapper):
+            widget.can_add_related = False
+            widget.can_change_related = False
+            widget.can_delete_related = False
+            widget.can_view_related = False
+            set_disable(widget.widget)
+        elif issubclass(widget.__class__, AdminSplitDateTime):
+            for w in widget.widgets:
+                set_disable(w)
+                w.media._js = []
+        elif issubclass(widget.__class__, AdminDateWidget):
             set_disable(widget)
-        else:
-            widget.attrs['readonly'] = 'true'
-            widget.attrs['style'] = 'border: none transparent; outline: none'
-    elif issubclass(widget.__class__, RelatedFieldWidgetWrapper):
-        widget.can_add_related = False
-        widget.can_change_related = False
-        widget.can_delete_related = False
-        widget.can_view_related = False
-        set_disable(widget.widget)
+            widget.media._js = []
+        elif hasattr(widget, 'input_type'):
+            set_disable(widget)
 
+    for widget in [form.base_fields[f].widget for f in form.base_fields if f in disabled_fields]:
+        disable_field(widget)
 
 class SuperUserOnlyAdminSite(admin.AdminSite):
     enable_nav_sidebar = True
@@ -89,12 +94,6 @@ class BaseTableAdminMixin():
     """
     save_on_top = False
 
-    def get_readonly_fields(self, request, obj=None) -> tuple[str]:
-        """
-        override of the ModelAdmin
-        """
-        return (*super(BaseTableAdminMixin, self).get_readonly_fields(request, obj), *self.model.get_readonly_fields())
-
     def get_csv_excluded_fields(self) -> list[str]:
         """
         override CsvImportModelMixin
@@ -149,19 +148,16 @@ class BaseTableAdminMixin():
 
     def get_html_readonly_fields(self, request, obj=None, **kwargs):
         if obj:
-            return self.model.get_html_readonly_fields() + obj.get_model_unique_key
+            return self.model.get_readonly_fields() + obj.get_model_unique_key
         else:
-            return self.model.get_html_readonly_fields()
+            return self.model.get_readonly_fields()
 
     def get_form(self, request, obj=None, **kwargs):
         """
         override of the ModelAdmin
         """
         form = super(BaseTableAdminMixin, self).get_form(request, obj, **kwargs)
-
-        readonly_field_widgets = [form.base_fields[f].widget for f in form.base_fields if f in self.get_html_readonly_fields(request, obj, **kwargs)]
-        for widget in readonly_field_widgets:
-            disable_field(widget)
+        disable_fields(form, self.get_html_readonly_fields(request, obj, **kwargs))
 
         return form
 

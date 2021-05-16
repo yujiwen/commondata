@@ -40,17 +40,9 @@ class BaseTable(models.Model):
     @staticmethod
     def get_readonly_fields():
         """
-        Read only fields by means of Django Admin Site definition.
-        By means of HTML, they are only div tags, which are classed as readonly.
+        Fields that can not input or edit on screen.
         """
-        return ('creator', 'created_at', 'updater', 'updated_at')
-
-    @staticmethod
-    def get_html_readonly_fields():
-        """
-        By means of HTML, they are input tags with readonly attribute.
-        """
-        return ('version',)
+        return ('creator', 'created_at', 'updater', 'updated_at', 'version')
 
     @staticmethod
     def get_autoupdatable_fields():
