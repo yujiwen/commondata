@@ -24,10 +24,10 @@ def disable_fields(form, disabled_fields):
         elif issubclass(widget.__class__, AdminSplitDateTime):
             for w in widget.widgets:
                 set_disable(w)
-                w.media._js = []
+                w.attrs['class'] = ''
         elif issubclass(widget.__class__, AdminDateWidget):
             set_disable(widget)
-            widget.media._js = []
+            widget.attrs['class'] = ''
         elif hasattr(widget, 'input_type'):
             set_disable(widget)
 
