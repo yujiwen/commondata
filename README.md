@@ -22,8 +22,8 @@ Collected some commonly used table columns to BaseTable and TimeLinedTable.
   - for a record, which have a newer record, it became not editable.
 
 ## Screenshots
-![Export Action&Import button](images/checked_csv_001.png)
-![Error List](images/checked_csv_errorlist.png)
+![Export Action&Import button](images/optimistic_lock.png)
+
 ## Installation and configuration
 - installation
   <pre>
