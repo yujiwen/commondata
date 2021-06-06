@@ -1,0 +1,19 @@
+{% load i18n static %}
+
+  <form 
+    enctype="multipart/form-data" 
+    method="post" id="{{ opts.model_name }}_form" novalidate>
+    {% csrf_token %}
+    {% if errors %}
+      <p class="errornote">
+      {% if errors|length == 1 %}{% translate "Please correct the error below." %}{% else %}{% translate "Please correct the errors below." %}{% endif %}
+      </p>
+      {{ adminform.form.non_field_errors }}
+    {% endif %}
+
+    <table class="small-form">
+      {{ form.as_table }}
+    </table>
+
+    <input type="submit" value={% translate "Upload" %}>
+  </form>
